@@ -1,13 +1,13 @@
 {
-  "name": "node-template",
-  "version": "1.0.0",
+  "name": "coinperso-backend",
+  "version": "0.0.1",
   "type": "module",
-  "description": "Plantilla base para los proyectos desarrollados en Node.JS",
+  "description": "Backend of CoinPerso App",
   "author": "Lazaro",
   "scripts": {
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
-    "lint": "eslint src/**/*.js --fix",
+    "lint": "eslint src/**/**/*.js --fix",
     "prettier": "prettier --write .",
     "prepare": "husky install",
     "postinstall": "npm run prepare"
@@ -25,10 +25,16 @@
     "prettier": "2.7.1"
   },
   "imports": {
-    "#Lib/*": "./src/lib/*"
+    "#Config/*": "./src/infrastructure/config/*"
   },
   "lint-staged": {
     "*.js": "eslint --fix",
     "*.{js,md}": "prettier --write"
+  },
+  "dependencies": {
+    "cors": "2.8.5",
+    "dotenv": "16.0.1",
+    "express": "4.18.1",
+    "mongoose": "6.5.2"
   }
 }
