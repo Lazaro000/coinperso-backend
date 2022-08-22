@@ -4,8 +4,12 @@
     "module": "Node16",
     "baseUrl": "./",
     "paths": {
+      "#UseCases/*": ["./src/application/use-cases/*"],
+      "#Models/*": ["./src/domain/models/*"],
       "#Config/*": ["./src/infrastructure/config/*"],
-      "#Routes/*": ["./src/infrastructure/routes/*"]
+      "#Routes/*": ["./src/infrastructure/routes/*"],
+      "#Middlewares/*": ["./src/infrastructure/middlewares/*"],
+      "#Schemas/*": ["./src/infrastructure/schemas/*"]
     }
   }
 }

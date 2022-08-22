@@ -1,4 +1,4 @@
-import { userRegisterUseCase } from '../../application/use-cases/user-register.usecase.js';
+import { userRegisterUseCase } from '#UseCases/user-register.usecase.js';
 
 export const userRegisterController = async (req, res, next) => {
   const { id, name, email, password } = req.body;

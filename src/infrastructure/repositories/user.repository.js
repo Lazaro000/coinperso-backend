@@ -1,5 +1,5 @@
-import { UserModel } from '../../domain/models/user.model.js';
-import { UserSchema } from '../schemas/user.schema.js';
+import { UserModel } from '#Models/user.model.js';
+import { UserSchema } from '#Schemas/user.schema.js';
 
 /**
  * User MongoDB repository implementation

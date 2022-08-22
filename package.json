@@ -28,8 +28,12 @@
     "prettier": "2.7.1"
   },
   "imports": {
+    "#UseCases/*": "./src/application/use-cases/*",
+    "#Models/*": "./src/domain/Models/*",
     "#Config/*": "./src/infrastructure/config/*",
-    "#Routes/*": "./src/infrastructure/routes/*"
+    "#Routes/*": "./src/infrastructure/routes/*",
+    "#Middlewares/*": "./src/infrastructure/Middlewares/*",
+    "#Schemas/*": "./src/infrastructure/schemas/*"
   },
   "lint-staged": {
     "*.js": "eslint --fix",

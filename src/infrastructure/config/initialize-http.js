@@ -2,7 +2,7 @@ import { createServer } from 'http';
 import express from 'express';
 import cors from 'cors';
 import { userRoutes } from '#Routes/user.routes.js';
-import { errorMiddleware } from '../middlewares/error.middleware.js';
+import { errorMiddleware } from '#Middlewares/error.middleware.js';
 
 export const initializeHttpServer = () => {
   const expressApp = express();
