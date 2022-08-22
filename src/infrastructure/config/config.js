@@ -4,10 +4,13 @@ dotenvConfig();
 
 export default {
   PORT: process.env.PORT || 3500,
-  jwtSecretKey: process.env.JWT_SECRET || 'somesecrettoken',
+  JWT_PRIVATE_KEY: process.env.JWT_PRIVATE_KEY || 'somesecrettoken',
   DB: {
-    URI: process.env.MONGODB_URI || 'mongodb://localhost/jwttutorial',
-    USER: process.env.MONGODB_USER,
-    PASSWORD: process.env.MONGODB_PASSWORD,
+    HOSTNAME: process.env.MONGODB_HOSTNAME || 'localhost',
+    NAME: process.env.MONGODB_DATABASE_NAME || 'coinperso',
+    USER: process.env.MONGODB_USER || 'root',
+    PASSWORD: process.env.MONGODB_PASSWORD || 'root',
+    PORT: process.env.MONGODB_PORT || 27017,
+    URI: process.env.MONGODB_URI || 'mongodb://localhost/coinperso',
   },
 };

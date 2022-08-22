@@ -10,7 +10,10 @@
     "lint": "eslint src/**/**/*.js --fix",
     "prettier": "prettier --write .",
     "prepare": "husky install",
-    "postinstall": "npm run prepare"
+    "postinstall": "npm run prepare",
+    "docker:up": "docker-compose -p coinperso up -d",
+    "docker:down": "docker-compose -p coinperso down",
+    "docker:down-volumes": "docker-compose -p coinperso down -v"
   },
   "devDependencies": {
     "eslint": "8.18.0",
