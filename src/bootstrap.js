@@ -1,8 +1,6 @@
+import { connectDB } from '#Config/initialize-db.js';
+import { initializeHttpServer } from '#Config/initialize-http.js';
 import { config as dotenvConfig } from 'dotenv';
-import { connectDB } from './infrastructure/config/initialize-db.js';
-// import mongoose from 'mongoose';
-
-import { initializeHttpServer } from './infrastructure/config/initialize-http.js';
 
 dotenvConfig();
 
