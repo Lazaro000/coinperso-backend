@@ -1,11 +1,8 @@
 import config from '#Config/config.js';
-import { config as dontEnvConfig } from 'dotenv';
 import { MongoMemoryReplSet } from 'mongodb-memory-server';
 import { bootstrap } from '../../src/bootstrap.js';
 
 export const setupTests = (test) => {
-  dontEnvConfig();
-
   let mongo;
 
   test.before(async () => {
@@ -16,7 +13,6 @@ export const setupTests = (test) => {
       },
     });
 
-    // process.env.MONGODB_URI = mongo.getUri();
     config.DB.URI = mongo.getUri();
 
     await bootstrap({ PORT: config.PORT });

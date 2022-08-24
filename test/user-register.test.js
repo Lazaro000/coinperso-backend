@@ -24,6 +24,20 @@ const fetchRegister = async (t, user) => {
   }
 };
 
+/**
+ * List of test in user-register
+ *
+ * * Register succesfully
+ * * Register failed - Duplicated ID
+ * * Register failed - Duplicated email
+ * * Register failed - Invalid ID format
+ * * Register failed - Invalid name format
+ * * Register failed - Invalid email format
+ * * Register failed - Invalid password format
+ * * Register failed - Missing fields
+ * * Register failed - Unnecesary fields
+ */
+
 test.serial('Register succesfully', async (t) => {
   const response = await fetchRegister(t, testUserA);
 
