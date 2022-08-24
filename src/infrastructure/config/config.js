@@ -4,7 +4,7 @@ dotenvConfig();
 
 export default {
   PORT: process.env.PORT || 3500,
-  JWT_PRIVATE_KEY: process.env.JWT_PRIVATE_KEY || 'somesecrettoken',
+  JWT_PRIVATE_KEY: process.env.JWT_PRIVATE_KEY || 'default_jwt_secret',
   DB: {
     HOSTNAME: process.env.MONGODB_HOSTNAME || 'localhost',
     NAME: process.env.MONGODB_DATABASE_NAME || 'coinperso',

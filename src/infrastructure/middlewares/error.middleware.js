@@ -1,3 +1,4 @@
+import { ApplicationUnauthorizedException } from 'src/application/errors/application-unauthorized.exception.js';
 import { ApplicationConflictException } from '../../application/errors/application-conflict.exception.js';
 import { DomainFormatException } from '../../domain/errors/domain-format.exception.js';
 import { HTTP_STATUS } from '../constants/http-status.constant.js';
@@ -12,6 +13,9 @@ export const errorMiddleware = (error, _, res, __) => {
     error instanceof InfrastructureFormatException
   )
     return res.status(HTTP_STATUS.BAD_REQUEST).send(error.message);
+
+  if (error instanceof ApplicationUnauthorizedException)
+    return res.status(HTTP_STATUS.UNAUTHORIZED).send(error.message);
 
   if (error instanceof ApplicationConflictException)
     return res.status(HTTP_STATUS.CONFLICT).send(error.message);
