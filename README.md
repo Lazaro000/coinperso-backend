@@ -2,7 +2,7 @@
 
 Backend of CoinPerso App
 
-## User stories
+## User features
 
 - The user can register on the platform with his name, email, password.
 - User can login with email and password.
@@ -29,3 +29,11 @@ Backend of CoinPerso App
   - Photo URL
 - portfolios:
   - Array of ids of the portolios created by the user
+
+### Reset Docker
+
+```
+docker system prune --all
+docker volume prune
+docker-compose up
+```

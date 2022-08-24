@@ -39,25 +39,53 @@ export class UserModel {
     this.#roles = roles;
   }
 
-  validateId(id) {
+  getId() {
+    return this.#id;
+  }
+
+  getName() {
+    return this.#name;
+  }
+
+  getEmail() {
+    return this.#email;
+  }
+
+  getPassword() {
+    return this.#password;
+  }
+
+  getProfilePic() {
+    return this.#profilePic;
+  }
+
+  getPortfolio() {
+    return this.#portfolios;
+  }
+
+  getRoles() {
+    return this.#roles;
+  }
+
+  static validateId(id) {
     return uuid.test(id);
   }
 
-  validateName(name) {
+  static validateName(name) {
     const nameRegex =
       /^(?![\s-'])(?!.*[\s-']{2})(?!.*[\s-']$)[A-ZÀ-ÖØ-öø-ÿ\s-']{2,30}$/i;
 
     return nameRegex.test(name);
   }
 
-  validateEmail(email) {
+  static validateEmail(email) {
     const EMAIL_REGEX =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     return EMAIL_REGEX.test(email);
   }
 
-  validatePassword(password) {
+  static validatePassword(password) {
     return (
       password.length >= 8 && password.length <= 30 && !password.includes(' ')
     );
@@ -77,6 +105,6 @@ export class UserModel {
 
     const hashedPassword = await hash(password, HASH_SALT);
 
-    return new UserModel(id, name, email, hashedPassword, undefined, []);
+    return new UserModel(id, name, email, hashedPassword, undefined, [], []);
   }
 }

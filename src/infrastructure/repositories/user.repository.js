@@ -22,15 +22,13 @@ export class UserRepository {
    * @returns Database user
    */
   static toPersistance(domainUser) {
-    const { id, name, email, password, profilePic, portfolios } = domainUser;
-
     return {
-      _id: id,
-      name,
-      email,
-      password,
-      profilePic,
-      portfolios,
+      _id: domainUser.getId(),
+      name: domainUser.getName(),
+      email: domainUser.getEmail(),
+      password: domainUser.getPassword(),
+      profilePic: domainUser.getProfilePic(),
+      portfolios: domainUser.getPortfolio(),
     };
   }
 

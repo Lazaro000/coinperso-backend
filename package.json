@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
+    "test": "ava ./test/**/*.test.js",
     "lint": "eslint src/**/**/*.js --fix",
     "prettier": "prettier --write .",
     "prepare": "husky install",
@@ -16,14 +17,18 @@
     "docker:down-volumes": "docker-compose -p coinperso down -v"
   },
   "devDependencies": {
+    "@ngneat/falso": "6.1.0",
+    "ava": "4.3.1",
     "eslint": "8.18.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-config-standard": "17.0.0",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-n": "15.2.3",
     "eslint-plugin-promise": "6.0.0",
+    "got": "12.3.1",
     "husky": "8.0.1",
     "lint-staged": "13.0.2",
+    "mongodb-memory-server": "8.9.0",
     "nodemon": "2.0.18",
     "prettier": "2.7.1"
   },
@@ -31,6 +36,7 @@
     "#UseCases/*": "./src/application/use-cases/*",
     "#Models/*": "./src/domain/Models/*",
     "#Config/*": "./src/infrastructure/config/*",
+    "#Controllers/*": "./src/infrastructure/controllers/*",
     "#Routes/*": "./src/infrastructure/routes/*",
     "#Middlewares/*": "./src/infrastructure/Middlewares/*",
     "#Schemas/*": "./src/infrastructure/schemas/*"
