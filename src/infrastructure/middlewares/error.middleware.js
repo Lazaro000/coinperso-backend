@@ -12,15 +12,21 @@ export const errorMiddleware = (error, _, res, __) => {
     error instanceof DomainFormatException ||
     error instanceof InfrastructureFormatException
   )
-    return res.status(HTTP_STATUS.BAD_REQUEST).send(error.message);
+    return res
+      .status(HTTP_STATUS.BAD_REQUEST)
+      .send({ errorMessage: error.message });
 
   if (error instanceof ApplicationUnauthorizedException)
-    return res.status(HTTP_STATUS.UNAUTHORIZED).send(error.message);
+    return res
+      .status(HTTP_STATUS.UNAUTHORIZED)
+      .send({ errorMessage: error.message });
 
   if (error instanceof ApplicationConflictException)
-    return res.status(HTTP_STATUS.CONFLICT).send(error.message);
+    return res
+      .status(HTTP_STATUS.CONFLICT)
+      .send({ errorMessage: error.message });
 
   return res
     .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
-    .send('Internal server error');
+    .send({ errorMessage: 'Internal server error' });
 };
