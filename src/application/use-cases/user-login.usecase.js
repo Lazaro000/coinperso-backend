@@ -6,7 +6,15 @@ export const userLoginUseCase = async (email, password) => {
   // Check that the user exists by email
   const existingUser = await UserRepository.findByEmail(email);
 
-  if (!existingUser.getId()) throw new InvalidLoginException();
+  if (
+    !existingUser ||
+    !existingUser.getId() ||
+    !existingUser.getEmail() ||
+    !existingUser.getName() ||
+    !existingUser.getPassword
+  ) {
+    throw new InvalidLoginException();
+  }
 
   // Check if the password matches
   const didPasswordMatch = await compare(password, existingUser.getPassword());

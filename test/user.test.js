@@ -1,4 +1,5 @@
 import config from '#Config/config.js';
+import { userLoginUseCase } from '#UseCases/user-login.usecase.js';
 import test from 'ava';
 import got from 'got';
 import { generateRandomUser } from './utils/generate-random-user.js';
@@ -52,6 +53,10 @@ const fetchLogin = async (t, user) => {
  * * User Register failed - Missing fields
  * * User Register failed - Unnecesary fields
  * * User Login successfully
+ * * User Login failed - Missing fields
+ * * User Login failed - Unnecesary fields
+ * * User Login failed - Wrong credentials (Bad email)
+ * * 'User Login failed - Wrong credentials (Bad password)'
  */
 
 test.serial('User Register succesfully', async (t) => {
@@ -147,10 +152,55 @@ test('User Register failed - Unnecesary fields', async (t) => {
   expectStatusCode(t, 400, response);
 });
 
-test('User Login successfully', async (t) => {
+test.serial('User Login successfully', async (t) => {
   const { email, password } = testUserA;
+  const user = { email, password };
 
-  const response = await fetchLogin(t, { email, password });
+  const response = await fetchLogin(t, user);
 
   expectStatusCode(t, 200, response);
+});
+
+test('User Login failed - Missing fields', async (t) => {
+  const { email } = testUserA;
+  const user = { email };
+
+  const response = await fetchLogin(t, user);
+
+  expectStatusCode(t, 400, response);
+});
+
+test('User Login failed - Unnecesary fields', async (t) => {
+  const { email, password } = testUserA;
+  const user = {
+    email,
+    password,
+    age: 25,
+  };
+
+  const response = await fetchLogin(t, user);
+
+  expectStatusCode(t, 400, response);
+});
+
+test('User Login failed - Wrong credentials (Bad email)', async (t) => {
+  const { password } = testUserA;
+  const email = 'emailatemail.com';
+
+  try {
+    await userLoginUseCase(email, password);
+  } catch (error) {
+    t.is('Wrong credentials', error.message);
+  }
+});
+
+test('User Login failed - Wrong credentials (Bad password)', async (t) => {
+  const { email } = testUserA;
+  const password = '1234';
+
+  try {
+    await userLoginUseCase(email, password);
+  } catch (error) {
+    t.is('Wrong credentials', error.message);
+  }
 });
