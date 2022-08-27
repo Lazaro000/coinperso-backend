@@ -8,6 +8,7 @@ const schema = new Schema({
   password: { type: String, required: true },
   profilePic: { type: String, required: false },
   portfolio: { type: [String], required: false },
+  roles: { type: [String], required: false },
 });
 
 export const UserSchema = model('User', schema);

@@ -1,4 +1,4 @@
-import { ApplicationUnauthorizedException } from 'src/application/errors/application-unauthorized.exception.js';
+import { ApplicationUnauthorizedException } from '../../application/errors/application-unauthorized.exception.js';
 import { ApplicationConflictException } from '../../application/errors/application-conflict.exception.js';
 import { DomainFormatException } from '../../domain/errors/domain-format.exception.js';
 import { HTTP_STATUS } from '../constants/http-status.constant.js';

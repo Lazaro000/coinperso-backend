@@ -7,13 +7,28 @@ import { setupTests } from './utils/setup-tests.js';
 
 setupTests(test);
 
-const endpoint = `http://localhost:${config.PORT}/register`;
+const endpointRegister = `http://localhost:${config.PORT}/register`;
+const endpointLogin = `http://localhost:${config.PORT}/login`;
+
 const testUserA = generateRandomUser();
 const testUserB = generateRandomUser();
 
 const fetchRegister = async (t, user) => {
   try {
-    const response = await got.post(endpoint, {
+    const response = await got.post(endpointRegister, {
+      json: user,
+      throwHttpErrors: false,
+    });
+
+    return response;
+  } catch (err) {
+    t.fail(err);
+  }
+};
+
+const fetchLogin = async (t, user) => {
+  try {
+    const response = await got.post(endpointLogin, {
       json: user,
       throwHttpErrors: false,
     });
@@ -25,26 +40,27 @@ const fetchRegister = async (t, user) => {
 };
 
 /**
- * List of test in user-register
+ * List of test in user
  *
- * * Register succesfully
- * * Register failed - Duplicated ID
- * * Register failed - Duplicated email
- * * Register failed - Invalid ID format
- * * Register failed - Invalid name format
- * * Register failed - Invalid email format
- * * Register failed - Invalid password format
- * * Register failed - Missing fields
- * * Register failed - Unnecesary fields
+ * * User Register successfully
+ * * User Register failed - Duplicated ID
+ * * User Register failed - Duplicated email
+ * * User Register failed - Invalid ID format
+ * * User Register failed - Invalid name format
+ * * User Register failed - Invalid email format
+ * * User Register failed - Invalid password format
+ * * User Register failed - Missing fields
+ * * User Register failed - Unnecesary fields
+ * * User Login successfully
  */
 
-test.serial('Register succesfully', async (t) => {
+test.serial('User Register succesfully', async (t) => {
   const response = await fetchRegister(t, testUserA);
 
   expectStatusCode(t, 201, response);
 });
 
-test.serial('Register failed - Duplicated ID', async (t) => {
+test.serial('User Register failed - Duplicated ID', async (t) => {
   const user = {
     ...testUserB,
     id: testUserA.id,
@@ -55,7 +71,7 @@ test.serial('Register failed - Duplicated ID', async (t) => {
   expectStatusCode(t, 409, response);
 });
 
-test.serial('Register failed - Duplicated email', async (t) => {
+test.serial('User Register failed - Duplicated email', async (t) => {
   const user = {
     ...testUserB,
     email: testUserA.email,
@@ -66,7 +82,7 @@ test.serial('Register failed - Duplicated email', async (t) => {
   expectStatusCode(t, 409, response);
 });
 
-test('Register failed - Invalid ID format', async (t) => {
+test('User Register failed - Invalid ID format', async (t) => {
   const user = {
     ...testUserA,
     id: 'invalid-uuid',
@@ -77,7 +93,7 @@ test('Register failed - Invalid ID format', async (t) => {
   expectStatusCode(t, 400, response);
 });
 
-test('Register failed - Invalid name format', async (t) => {
+test('User Register failed - Invalid name format', async (t) => {
   const user = {
     ...testUserA,
     name: 'name-with-./*',
@@ -88,7 +104,7 @@ test('Register failed - Invalid name format', async (t) => {
   expectStatusCode(t, 400, response);
 });
 
-test('Register failed - Invalid email format', async (t) => {
+test('User Register failed - Invalid email format', async (t) => {
   const user = {
     ...testUserA,
     email: 'emailatemail.com',
@@ -99,7 +115,7 @@ test('Register failed - Invalid email format', async (t) => {
   expectStatusCode(t, 400, response);
 });
 
-test('Register failed - Invalid password format', async (t) => {
+test('User Register failed - Invalid password format', async (t) => {
   const user = {
     ...testUserA,
     password: '1234',
@@ -110,7 +126,7 @@ test('Register failed - Invalid password format', async (t) => {
   expectStatusCode(t, 400, response);
 });
 
-test('Register failed - Missing fields', async (t) => {
+test('User Register failed - Missing fields', async (t) => {
   const { id, name, email } = testUserA;
 
   const user = { id, name, email };
@@ -120,7 +136,7 @@ test('Register failed - Missing fields', async (t) => {
   expectStatusCode(t, 400, response);
 });
 
-test('Register failed - Unnecesary fields', async (t) => {
+test('User Register failed - Unnecesary fields', async (t) => {
   const user = {
     ...testUserA,
     age: 25,
@@ -129,4 +145,12 @@ test('Register failed - Unnecesary fields', async (t) => {
   const response = await fetchRegister(t, user);
 
   expectStatusCode(t, 400, response);
+});
+
+test('User Login successfully', async (t) => {
+  const { email, password } = testUserA;
+
+  const response = await fetchLogin(t, { email, password });
+
+  expectStatusCode(t, 200, response);
 });

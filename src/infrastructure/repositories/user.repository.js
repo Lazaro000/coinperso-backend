@@ -11,9 +11,10 @@ export class UserRepository {
    * @returns Domain user
    */
   static toDomain(persistanceUser) {
-    const { _id, email, name, password, profilePic, images } = persistanceUser;
+    const { _id, email, name, password, profilePic, images, roles } =
+      persistanceUser;
 
-    return new UserModel(_id, name, email, password, profilePic, images);
+    return new UserModel(_id, name, email, password, profilePic, images, roles);
   }
 
   /**
@@ -29,6 +30,7 @@ export class UserRepository {
       password: domainUser.getPassword(),
       profilePic: domainUser.getProfilePic(),
       portfolios: domainUser.getPortfolio(),
+      roles: domainUser.getRoles(),
     };
   }
 
