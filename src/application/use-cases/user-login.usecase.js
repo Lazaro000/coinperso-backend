@@ -1,26 +1,32 @@
 import { compare } from 'bcrypt';
-import { UserRepository } from '#Repositories/user.repository.js';
 import { InvalidLoginException } from '../errors/invalid-login.exception.js';
 
-export const userLoginUseCase = async (email, password) => {
-  // Check that the user exists by email
-  const existingUser = await UserRepository.findByEmail(email);
-
-  if (
-    !existingUser ||
-    !existingUser.getId() ||
-    !existingUser.getEmail() ||
-    !existingUser.getName() ||
-    !existingUser.getPassword
-  ) {
-    throw new InvalidLoginException();
+export class UserLoginUseCase {
+  constructor({ userRepository }) {
+    this.userRepository = userRepository;
   }
 
-  // Check if the password matches
-  const didPasswordMatch = await compare(password, existingUser.getPassword());
+  async execute(email, password) {
+    // Check that the user exists by email
+    const existingUser = await this.userRepository.findByEmail(email);
+    const userExists =
+      existingUser ||
+      existingUser.getId() ||
+      existingUser.getEmail() ||
+      existingUser.getName() ||
+      existingUser.getPassword();
 
-  if (!didPasswordMatch) throw new InvalidLoginException();
+    if (!userExists) throw new InvalidLoginException();
 
-  // Return the ID of the existing user
-  return existingUser.getId();
-};
+    // Check if the password matches
+    const didPasswordMatch = await compare(
+      password,
+      existingUser.getPassword()
+    );
+
+    if (!didPasswordMatch) throw new InvalidLoginException();
+
+    // Return the ID of the existing user
+    return existingUser.getId();
+  }
+}

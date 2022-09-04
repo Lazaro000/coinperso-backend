@@ -1,5 +1,4 @@
 import config from '#Config/config.js';
-import { userLoginUseCase } from '#UseCases/user-login.usecase.js';
 import test from 'ava';
 import got from 'got';
 import { generateRandomUser } from './utils/generate-random-user.js';
@@ -183,24 +182,24 @@ test('User Login failed - Unnecesary fields', async (t) => {
   expectStatusCode(t, 400, response);
 });
 
-test('User Login failed - Wrong credentials (Bad email)', async (t) => {
-  const { password } = testUserA;
-  const email = 'emailatemail.com';
+// test('User Login failed - Wrong credentials (Bad email)', async (t) => {
+//   const { password } = testUserA;
+//   const email = 'emailatemail.com';
 
-  try {
-    await userLoginUseCase(email, password);
-  } catch (error) {
-    t.is('Wrong credentials', error.message);
-  }
-});
+//   try {
+//     await userLoginUseCase(email, password);
+//   } catch (error) {
+//     t.is('Wrong credentials', error.message);
+//   }
+// });
 
-test('User Login failed - Wrong credentials (Bad password)', async (t) => {
-  const { email } = testUserA;
-  const password = '1234';
+// test('User Login failed - Wrong credentials (Bad password)', async (t) => {
+//   const { email } = testUserA;
+//   const password = '1234';
 
-  try {
-    await userLoginUseCase(email, password);
-  } catch (error) {
-    t.is('Wrong credentials', error.message);
-  }
-});
+//   try {
+//     await userLoginUseCase(email, password);
+//   } catch (error) {
+//     t.is('Wrong credentials', error.message);
+//   }
+// });
