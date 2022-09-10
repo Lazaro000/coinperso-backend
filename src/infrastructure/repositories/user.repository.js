@@ -1,5 +1,9 @@
 import { UserModel } from '#Models/user.model.js';
 import { UserSchema } from '#Schemas/user.schema.js';
+import { EmailVO } from '#ValueObjects/email.vo.js';
+import { NameVO } from '#ValueObjects/name.vo.js';
+import { PasswordVO } from '#ValueObjects/password.vo.js';
+import { UuidVO } from '#ValueObjects/uuid.vo.js';
 
 /**
  * User MongoDB repository implementation
@@ -11,10 +15,19 @@ export class UserRepository {
    * @returns Domain user
    */
   toDomain(persistanceUser) {
-    const { _id, email, name, password, profilePic, images, roles } =
+    const { _id, email, name, password, profilePic, portfolios, roles } =
       persistanceUser;
 
-    return new UserModel(_id, name, email, password, profilePic, images, roles);
+    // TODO do ProfilePicVO validation
+    return new UserModel(
+      new UuidVO(_id),
+      new NameVO(name),
+      new EmailVO(email),
+      new PasswordVO(password),
+      profilePic,
+      portfolios,
+      roles
+    );
   }
 
   /**
@@ -29,7 +42,7 @@ export class UserRepository {
       email: domainUser.getEmail(),
       password: domainUser.getPassword(),
       profilePic: domainUser.getProfilePic(),
-      portfolios: domainUser.getPortfolio(),
+      portfolios: domainUser.getPortfolios(),
       roles: domainUser.getRoles(),
     };
   }
@@ -40,7 +53,7 @@ export class UserRepository {
    * @returns Domain user
    */
   async findById(id) {
-    const userFound = await UserSchema.findById(id).exec();
+    const userFound = await UserSchema.findById(id.value).exec();
 
     if (!userFound) return null;
 
@@ -53,7 +66,7 @@ export class UserRepository {
    * @returns Domain user
    */
   async findByEmail(email) {
-    const userFound = await UserSchema.findOne({ email }).exec();
+    const userFound = await UserSchema.findOne({ email: email.value }).exec();
 
     if (!userFound) return null;
 

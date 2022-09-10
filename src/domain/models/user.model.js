@@ -1,11 +1,8 @@
-import uuid from 'uuid-random';
-import { hash } from 'bcrypt';
-import { InvalidEmailFormatException } from '../errors/invalid-email-format.exception.js';
-import { InvalidIdFormatException } from '../errors/invalid-id-format.exception.js';
-import { InvalidNameFormatException } from '../errors/invalid-name-format.exception.js';
-import { InvalidPasswordFormatException } from '../errors/invalid-password-format.exception.js';
-
-const HASH_SALT = 10;
+import { EmailVO } from '#ValueObjects/email.vo.js';
+import { NameVO } from '#ValueObjects/name.vo.js';
+import { PasswordVO } from '#ValueObjects/password.vo.js';
+import { UuidVO } from '#ValueObjects/uuid.vo.js';
+import { InvalidUserFormatException } from '../errors/invalid-user-format.exception.js';
 
 /**
  * Registered user in the application
@@ -21,15 +18,17 @@ export class UserModel {
 
   /**
    * Constructor
-   * @param {String} id User's unique identifier
-   * @param {String} name User's name
-   * @param {String} email User's email
-   * @param {String} password User's hashed password
-   * @param {String} profilePic User's profile picture URL
-   * @param {Portfolio[]} portfolios User's portfolios IDs
-   * @param {Roles[]} roles User's roles
+   * @param {UuidVO} id User unique identifier
+   * @param {NameVO} name User name
+   * @param {EmailVO} email User email
+   * @param {PasswordVO} password User hashed password
+   * @param {ProfilePicVO} profilePic User profile picture URL
+   * @param {String[]} portfolios User's portfolios IDs
+   * @param {String[]} roles User's roles
    */
   constructor(id, name, email, password, profilePic, portfolios, roles) {
+    this.assertIsValid(id, name, email, password);
+
     this.#id = id;
     this.#password = password;
     this.#email = email;
@@ -40,71 +39,40 @@ export class UserModel {
   }
 
   getId() {
-    return this.#id;
+    return this.#id._value;
   }
 
   getName() {
-    return this.#name;
+    return this.#name._value;
   }
 
   getEmail() {
-    return this.#email;
+    return this.#email._value;
   }
 
   getPassword() {
-    return this.#password;
+    return this.#password._value;
   }
 
   getProfilePic() {
-    return this.#profilePic;
+    return this.#profilePic ? this.#profilePic._value : undefined;
   }
 
-  getPortfolio() {
-    return this.#portfolios;
+  getPortfolios() {
+    return this.#portfolios ? this.#portfolios._value : undefined;
   }
 
   getRoles() {
-    return this.#roles;
+    return this.#roles ? this.#roles._value : undefined;
   }
 
-  static validateId(id) {
-    return uuid.test(id);
-  }
-
-  static validateName(name) {
-    const nameRegex =
-      /^(?![\s-'])(?!.*[\s-']{2})(?!.*[\s-']$)[A-ZÀ-ÖØ-öø-ÿ\s-']{2,30}$/i;
-
-    return nameRegex.test(name);
-  }
-
-  static validateEmail(email) {
-    const EMAIL_REGEX =
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    return EMAIL_REGEX.test(email);
-  }
-
-  static validatePassword(password) {
-    return (
-      password.length >= 8 && password.length <= 30 && !password.includes(' ')
-    );
-  }
-
-  static async create(id, name, email, password) {
-    if (!UserModel.validateId(id)) throw new InvalidIdFormatException();
-    if (!UserModel.validateName(name)) {
-      throw new InvalidNameFormatException();
-    }
-    if (!UserModel.validateEmail(email)) {
-      throw new InvalidEmailFormatException();
-    }
-    if (!UserModel.validatePassword(password)) {
-      throw new InvalidPasswordFormatException();
-    }
-
-    const hashedPassword = await hash(password, HASH_SALT);
-
-    return new UserModel(id, name, email, hashedPassword, undefined, [], []);
+  assertIsValid(id, name, email, password) {
+    if (
+      !(id instanceof UuidVO) ||
+      !(name instanceof NameVO) ||
+      !(email instanceof EmailVO) ||
+      !(password instanceof PasswordVO)
+    )
+      throw new InvalidUserFormatException();
   }
 }

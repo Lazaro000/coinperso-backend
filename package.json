@@ -34,7 +34,8 @@
   },
   "imports": {
     "#UseCases/*": "./src/application/use-cases/*",
-    "#Models/*": "./src/domain/Models/*",
+    "#Models/*": "./src/domain/models/*",
+    "#ValueObjects/*": "./src/domain/value-objects/*",
     "#Config/*": "./src/infrastructure/config/*",
     "#Controllers/*": "./src/infrastructure/controllers/*",
     "#Routes/*": "./src/infrastructure/routes/*",

@@ -7,7 +7,7 @@ const schema = new Schema({
   email: { type: String, required: true },
   password: { type: String, required: true },
   profilePic: { type: String, required: false },
-  portfolio: { type: [String], required: false },
+  portfolios: { type: [String], required: false },
   roles: { type: [String], required: false },
 });
 
