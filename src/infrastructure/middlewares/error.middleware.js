@@ -16,7 +16,10 @@ export const errorMiddleware = (error, _, res, __) => {
       .status(HTTP_STATUS.BAD_REQUEST)
       .send({ errorMessage: error.message });
 
-  if (error instanceof ApplicationUnauthorizedException)
+  if (
+    error instanceof ApplicationUnauthorizedException ||
+    error instanceof InfrastructureFormatException
+  )
     return res
       .status(HTTP_STATUS.UNAUTHORIZED)
       .send({ errorMessage: error.message });
@@ -28,5 +31,5 @@ export const errorMiddleware = (error, _, res, __) => {
 
   return res
     .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
-    .send({ errorMessage: 'Internal server error' });
+    .send({ errorMessage: 'Internal server error', error });
 };
