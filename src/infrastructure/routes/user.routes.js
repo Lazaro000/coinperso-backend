@@ -13,7 +13,7 @@ router.post(
   '/register',
   userRegisterController.execute.bind(userRegisterController)
 );
-router.get(
+router.post(
   '/profile',
   authMiddleware,
   userProfileController.execute.bind(userProfileController)

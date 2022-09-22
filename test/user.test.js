@@ -1,4 +1,5 @@
 import config from '#Config/config.js';
+import { signAsync } from '#Services/jwt.service.js';
 import test from 'ava';
 import got from 'got';
 import { generateRandomUser } from './utils/generate-random-user.js';
@@ -9,6 +10,7 @@ setupTests(test);
 
 const endpointRegister = `http://localhost:${config.PORT}/register`;
 const endpointLogin = `http://localhost:${config.PORT}/login`;
+const endpointProfile = `http://localhost:${config.PORT}/profile`;
 
 const testUserA = generateRandomUser();
 const testUserB = generateRandomUser();
@@ -39,6 +41,20 @@ const fetchLogin = async (t, user) => {
   }
 };
 
+const fetchProfile = async (t, userId, token) => {
+  try {
+    const response = await got.post(endpointProfile, {
+      headers: { Authorization: `Bearer ${token}` },
+      json: { userId },
+      throwHttpErrors: false,
+    });
+
+    return response;
+  } catch (err) {
+    t.fail(err);
+  }
+};
+
 /**
  * List of test in user
  *
@@ -54,8 +70,7 @@ const fetchLogin = async (t, user) => {
  * * User Login successfully
  * * User Login failed - Missing fields
  * * User Login failed - Unnecesary fields
- * * User Login failed - Wrong credentials (Bad email)
- * * 'User Login failed - Wrong credentials (Bad password)'
+ * * User Profile succesfully
  */
 
 test.serial('User Register succesfully', async (t) => {
@@ -180,6 +195,18 @@ test('User Login failed - Unnecesary fields', async (t) => {
   const response = await fetchLogin(t, user);
 
   expectStatusCode(t, 400, response);
+});
+
+test('User Profile succesfully', async (t) => {
+  const { id } = testUserA;
+
+  const payload = { id };
+  const signOptions = { algorithm: 'HS512', expiresIn: '7d' };
+  const token = await signAsync(payload, signOptions);
+
+  const response = await fetchProfile(t, id, token);
+
+  expectStatusCode(t, 200, response);
 });
 
 // test('User Login failed - Wrong credentials (Bad email)', async (t) => {
