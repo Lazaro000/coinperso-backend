@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import { userRoutes } from '#Routes/user.routes.js';
 import { errorMiddleware } from '#Middlewares/error.middleware.js';
+import { portfolioRoutes } from '#Routes/portfolio.routes.js';
 
 export const initializeHttpServer = () => {
   const expressApp = express();
@@ -11,7 +12,8 @@ export const initializeHttpServer = () => {
   expressApp.use(cors());
 
   // Routes
-  expressApp.use(userRoutes);
+  expressApp.use('/user', userRoutes);
+  expressApp.use('/portfolio', portfolioRoutes);
 
   // Middlewares
   expressApp.use(errorMiddleware);
